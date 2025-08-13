@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLA Format Generator & Academic Resource Center | Create Perfect MLA Headers</title>
+    <meta name="description" content="Generate perfect MLA headers instantly. Comprehensive MLA guides, templates, and citation examples for academic success.">
+    <link rel="canonical" href="https://www.yourdomain.com/mla-generator/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #8B0000;
+            --secondary: #FFF5E6;
+            --light: #ffffff;
+            --dark: #333333;
+            --border: #e0e0e0;
+            --text: #444444;
+            --gray: #aaaaaa;
+            --success: #2e8b57;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+        }
+        
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+        }
+        
+        header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .header-description {
+            color: #555;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            background-color: #f8f8f8;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 200px;
+            max-width: 250px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--primary);
+            z-index: -1;
+            transition: width 0.3s;
+        }
+        
+        .tab-btn:hover::before {
+            width: 100%;
+        }
+        
+        .tab-btn:hover {
+            color: white;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--light);
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .generator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h2 i {
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        label i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        input[type="text"],
+        input[type="date"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            background-color: #fdfdfd;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+        }
+        
+        .btn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        #generate-btn, #reset-btn {
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 14px 0;
+            width: 100%;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        #generate-btn {
+            background-color: var(--primary);
+        }
+        
+        #generate-btn:hover {
+            background-color: #6B0000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.2);
+        }
+        
+        #reset-btn {
+            background-color: #555;
+        }
+        
+        #reset-btn:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .preview-container {
+            min-height: 350px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 30px 25px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.8;
+            position: relative;
+            background-color: #fcfaf6;
+            transition: box-shadow 0.3s;
+        }
+        
+        .preview-container:hover {
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .placeholder-text {
+            color: #999;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            font-style: italic;
+        }
+        
+        .mla-preview {
+            font-size: 12pt;
+            line-height: 1.8;
+        }
+        
+        .mla-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            font-size: 11pt;
+            padding: 20px 40px;
+        }
+        
+        .mla-heading {
+            margin-bottom: 30px;
+        }
+        
+        .mla-heading-line {
+            margin-bottom: 5px;
+        }
+        
+        .mla-title {
+            text-align: center;
+            font-size: 18pt;
+            margin: 30px 0;
+            font-weight: normal;
+        }
+        
+        .mla-content-sample {
+            text-indent: 1.5em;
+            margin-top: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 14px 10px;
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            background-color: #6B0000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .action-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .action-btn.success {
+            background-color: var(--success);
+        }
+        
+        .action-btn.success:hover {
+            background-color: #1d6a3c;
+        }
+        
+        #download-docx-btn {
+            background-color: #216baf;
+        }
+        
+        #download-docx-btn:hover {
+            background-color: #1a5496;
+        }
+        
+        #resource-center {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 35px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+        
+        #resource-center.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .resource-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .resource-header h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .resource-header p {
+            color: #555;
+            font-size: 1.15rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .resource-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s;
+            background: #fcfaf6;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary);
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-card h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        .resource-card p {
+            margin-bottom: 20px;
+            color: #555;
+            min-height: 80px;
+        }
+        
+        .resource-link {
+            display: block;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .resource-link:hover {
+            background: #6B0000;
+        }
+        
+        .resource-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e0e0f0;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .footer-container {
+            margin-top: 50px;
+            padding: 30px 0 20px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #555;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: #6B0000;
+            text-decoration: underline;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* SEO优化部分 */
+        .seo-content {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+        }
+        
+        .seo-content h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .seo-content h3 {
+            color: #444;
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+        
+        .seo-content p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .seo-content ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .seo-content li {
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 900px) {
+            .generator-container {
+                grid-template-columns: 1fr;
+            }
+            
+            #resource-center {
+                grid-column: 1;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab-btn {
+                min-width: 100%;
+                max-width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header>
+            <h1><i class="fas fa-book"></i> MLA Format Generator & Academic Resource Center</h1>
+            <p class="header-description">Create perfect MLA headers instantly and access our comprehensive guides for academic success</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="generator">MLA Generator</button>
+            <button class="tab-btn" data-tab="resources">MLA Resources</button>
+        </div>
+        
+        <!-- 左右布局容器 -->
+        <div class="generator-container">
+            <!-- 表单部分 (左) -->
+            <section class="section input-section">
+                <h2><i class="fas fa-edit"></i> Create Perfect MLA Format</h2>
+                <form id="mla-form">
+                    <div class="form-group">
+                        <label for="student-name"><i class="fas fa-user"></i> Your Full Name</label>
+                        <input type="text" id="student-name" placeholder="e.g. John Smith">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instructor-name"><i class="fas fa-chalkboard-teacher"></i> Instructor's Name</label>
+                        <input type="text" id="instructor-name" placeholder="e.g. Dr. Johnson">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course"><i class="fas fa-graduation-cap"></i> Course Name</label>
+                        <input type="text" id="course" placeholder="e.g. English 101">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="due-date"><i class="far fa-calendar-alt"></i> Due Date</label>
+                        <input type="date" id="due-date" value="2025-08-13">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="page-number"><i class="fas fa-file-alt"></i> Starting Page Number</label>
+                        <input type="number" id="page-number" min="1" value="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="essay-title"><i class="fas fa-heading"></i> Essay Title</label>
+                        <input type="text" id="essay-title" placeholder="Your Essay Title">
+                    </div>
+                    
+                    <div class="btn-container">
+                        <button type="button" id="generate-btn"><i class="fas fa-magic"></i> Generate MLA Format</button>
+                        <button type="button" id="reset-btn"><i class="fas fa-redo"></i> Reset Form</button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- 预览部分 (右) -->
+            <section class="section preview-section">
+                <h2><i class="far fa-eye"></i> MLA Format Preview</h2>
+                <div id="header-preview" class="preview-container">
+                    <p class="placeholder-text">Your generated MLA format will appear here. Complete the form and click "Generate MLA Format".</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="copy-btn" class="action-btn" disabled><i class="far fa-copy"></i> Copy to Clipboard</button>
+                    <button id="download-pdf-btn" class="action-btn" disabled><i class="far fa-file-pdf"></i> Download PDF</button>
+                    <button id="download-docx-btn" class="action-btn" disabled><i class="far fa-file-word"></i> Download DOCX</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 资源中心部分 -->
+        <section id="resource-center">
+            <div class="resource-header">
+                <h2><i class="fas fa-book-reader"></i> MLA Academic Resource Center</h2>
+                <p>Comprehensive guides, templates, and examples for perfect MLA formatting</p>
+            </div>
+            
+            <div class="resource-grid">
+                <!-- 文章1 -->
+                <div class="resource-card">
+                    <h3>Complete MLA 9th Edition Guide</h3>
+                    <p>Master the latest MLA standards with detailed formatting instructions, citation rules, and examples for all source types.</p>
+                    <a href="content/guides/mla-complete-guide.html" class="resource-link">View Full Guide</a>
+                    <div class="resource-info">Comprehensive guide · Updated August 2025</div>
+                </div>
+                
+                <!-- 文章2 -->
+                <div class="resource-card">
+                    <h3>APA vs MLA Formatting</h3>
+                    <p>Understand the key differences between APA and MLA styles with our detailed comparison and practical examples.</p>
+                    <a href="content/guides/apa-vs-mla.html" class="resource-link">Compare Formatting Styles</a>
+                    <div class="resource-info">Comparative analysis · Charts & examples</div>
+                </div>
+                
+                <!-- 文章3 -->
+                <div class="resource-card">
+                    <h3>Common MLA Mistakes & Fixes</h3>
+                    <p>Identify and correct the 15 most common MLA formatting errors students make in their papers.</p>
+                    <a href="content/blog/common-mla-mistakes.html" class="resource-link">Avoid These Mistakes</a>
+                    <div class="resource-info">Real student examples · Screenshots</div>
+                </div>
+                
+                <!-- 文章4 -->
+                <div class="resource-card">
+                    <h3>MLA Citation Examples</h3>
+                    <p>Properly cite books, websites, journals, videos and more with our comprehensive citation library.</p>
+                    <a href="content/resources/mla-citation-examples.html" class="resource-link">Explore Examples</a>
+                    <div class="resource-info">100+ examples · Downloadable cheatsheet</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SEO优化内容区域 -->
+        <section class="seo-content">
+            <h2>Understanding MLA Formatting for Academic Success</h2>
+            
+            <p>The Modern Language Association (MLA) format is the standard citation style used in humanities disciplines such as literature, languages, and cultural studies. Proper MLA formatting is essential for academic integrity and professional presentation of your research.</p>
+            
+            <h3>Key Components of MLA Format</h3>
+            <ul>
+                <li><strong>Header</strong> - Includes your last name and page number in the top right corner</li>
+                <li><strong>Heading</strong> - Your name, instructor's name, course, and date in the top left</li>
+                <li><strong>Title</strong> - Centered, standard capitalization (no bold, underline, or italics)</li>
+                <li><strong>Margins</strong> - 1-inch margins on all sides</li>
+                <li><strong>Font</strong> - 12-point Times New Roman or similar readable font</li>
+                <li><strong>Line Spacing</strong> - Double-spaced throughout the document</li>
+                <li><strong>Citations</strong> - In-text citations with author-page format and Works Cited page</li>
+            </ul>
+            
+            <h3>Why Proper Formatting Matters</h3>
+            <p>Using correct MLA formatting demonstrates your attention to detail and respect for academic standards. It ensures:</p>
+            <ul>
+                <li>Proper attribution of sources to avoid plagiarism</li>
+                <li>Consistency across academic papers</li>
+                <li>Professional presentation of your research</li>
+                <li>Easier navigation for readers and instructors</li>
+                <li>Adherence to academic integrity standards</li>
+            </ul>
+            
+            <h3>Common MLA Formatting Mistakes to Avoid</h3>
+            <p>Students often make these errors when formatting MLA papers:</p>
+            <ul>
+                <li>Incorrect header placement or formatting</li>
+                <li>Missing or improperly formatted Works Cited page</li>
+                <li>Inconsistent spacing throughout the document</li>
+                <li>Improper citation of online sources</li>
+                <li>Using incorrect font size or type</li>
+                <li>Forgetting to include page numbers</li>
+            </ul>
+            
+            <h3>How Our MLA Generator Helps</h3>
+            <p>Our MLA Format Generator ensures you create perfectly formatted MLA headers every time. Simply enter your information and generate:</p>
+            <ul>
+                <li>Correctly formatted MLA headers</li>
+                <li>Proper page numbering</li>
+                <li>Accurate title placement</li>
+                <li>Ready-to-use templates</li>
+                <li>Downloadable formats (PDF, DOCX)</li>
+            </ul>
+        </section>
+    </div>
+    
+    <!-- 页脚区域 -->
+    <footer class="footer-container">
+        <div class="footer-links">
+            <a href="/about-us" class="footer-link">About Us</a>
+            <a href="/terms-of-service.html" class="footer-link">Terms of Service</a>
+            <a href="/privacy-policy.html" class="footer-link">Privacy Policy</a>
+        </div>
+        <p>&copy; 2025 MLA Format Generator & Academic Resource Center. All rights reserved.</p>
+    </footer>
+    
+    <div class="toast" id="toast">Content copied to clipboard!</div>
+    
+    <script>
+        // DOM加载完成时执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 标签切换功能
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    // 更新激活标签
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                    
+                    // 显示/隐藏部分
+                    if(button.dataset.tab === 'generator') {
+                        document.querySelector('.generator-container').style.display = 'grid';
+                        document.getElementById('resource-center').classList.remove('active');
+                    } else {
+                        document.querySelector('.generator-container').style.display = 'none';
+                        document.getElementById('resource-center').classList.add('active');
+                    }
+                });
+            });
+            
+            // 日期格式化函数
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const months = [
+                    'January', 'February', 'March', 'April',
+                    'May', 'June', 'July', 'August',
+                    'September', 'October', 'November', 'December'
+                ];
+                return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+            }
+            
+            // 生成按钮
+            const generateBtn = document.getElementById('generate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const preview = document.getElementById('header-preview');
+            const placeholderText = document.querySelector('.placeholder-text');
+            const downloadPDFBtn = document.getElementById('download-pdf-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const downloadDocxBtn = document.getElementById('download-docx-btn');
+            
+            // 生成 MLA 格式
+            generateBtn.addEventListener('click', function() {
+                const studentName = document.getElementById('student-name').value || "Your Name";
+                const instructorName = document.getElementById('instructor-name').value || "Instructor's Name";
+                const course = document.getElementById('course').value || "Course";
+                const dateValue = document.getElementById('due-date').value;
+                const pageNum = document.getElementById('page-number').value || "1";
+                const title = document.getElementById('essay-title').value || "Essay Title";
+                
+                // 格式化日期
+                let formattedDate = "Date";
+                if (dateValue) {
+                    formattedDate = formatDate(dateValue);
+                }
+                
+                // 提取姓氏
+                const nameParts = studentName.split(' ');
+                const lastName = nameParts[nameParts.length - 1] || studentName;
+                
+                // 创建 MLA 预览
+                const mlaContent = `
+                    <div class="mla-preview">
+                        <div class="mla-header">${lastName} ${pageNum}</div>
+                        <div class="mla-heading">
+                            <div class="mla-heading-line">${studentName}</div>
+                            <div class="mla-heading-line">${instructorName}</div>
+                            <div class="mla-heading-line">${course}</div>
+                            <div class="mla-heading-line">${formattedDate}</div>
+                        </div>
+                        <div class="mla-title">${title}</div>
+                        <div class="mla-content-sample">
+                            <p>This is where your essay begins. The first paragraph should introduce your topic and provide a thesis statement. Remember to follow MLA formatting guidelines throughout your paper, including double-spaced text, 12-point Times New Roman font, and 1-inch margins on all sides. Proper MLA formatting also includes parenthetical citations for any quoted or paraphrased material.</p>
+                            <p>When citing sources in your text, provide the author's last name and page number without any punctuation. For example: (Smith 42). If the source has no author, use a shortened version of the title in your citation. Always provide a corresponding Works Cited entry for every in-text citation.</p>
+                        </div>
+                    </div>
+                `;
+                
+                preview.innerHTML = mlaContent;
+                if (placeholderText) {
+                    placeholderText.style.display = 'none';
+                }
+                
+                // 启用所有按钮
+                downloadPDFBtn.disabled = false;
+                downloadDocxBtn.disabled = false;
+                copyBtn.disabled = false;
+                
+                // 添加生成成功的视觉反馈
+                generateBtn.innerHTML = '<i class="fas fa-check-circle"></i> Generated!';
+                generateBtn.classList.add('success');
+                setTimeout(() => {
+                    generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate MLA Format';
+                    generateBtn.classList.remove('success');
+                }, 2000);
+            });
+
+            // 重置表单
+            resetBtn.addEventListener('click', function() {
+                // 重置表单输入
+                document.getElementById('mla-form').reset();
+                // 设置日期为默认值
+                document.getElementById('due-date').value = "2025-08-13";
+                
+                // 清空预览区域
+                preview.innerHTML = '<p class="placeholder-text">Your generated MLA format will appear here. Complete the form and click "Generate MLA Format".</p>';
+                
+                // 禁用所有按钮
+                downloadPDFBtn.disabled = true;
+                downloadDocxBtn.disabled = true;
+                copyBtn.disabled = true;
+                
+                // 添加重置成功的视觉反馈
+                resetBtn.innerHTML = '<i class="fas fa-check-circle"></i> Reset!';
+                setTimeout(() => {
+                    resetBtn.innerHTML = '<i class="fas fa-redo"></i> Reset Form';
+                }, 2000);
+            });
+
+            // 复制功能
+            copyBtn.addEventListener('click', function() {
+                if (copyBtn.disabled) return;
+                
+                // 获取预览文本
+                const previewText = preview.innerText;
+                
+                // 复制到剪贴板
+                navigator.clipboard.writeText(previewText).then(() => {
+                    // 显示提示消息
+                    const toast = document.getElementById('toast');
+                    toast.textContent = "MLA content copied to clipboard!";
+                    toast.style.display = "block";
+                    setTimeout(() => {
+                        toast.style.display = "none";
+                    }, 3000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            });
+
+            // PDF下载功能
+            downloadPDFBtn.addEventListener('click', function() {
+                if (downloadPDFBtn.disabled) return;
+                
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    // 设置MLA格式
+                    const studentName = document.getElementById('student-name').value || "Your Name";
+                    const instructorName = document.getElementById('instructor-name').value || "Instructor's Name";
+                    const course = document.getElementById('course').value || "Course";
+                    const dateValue = document.getElementById('due-date').value;
+                    const pageNum = document.getElementById('page-number').value || "1";
+                    const title = document.getElementById('essay-title').value || "Essay Title";
+                    
+                    // 格式化日期
+                    let formattedDate = "Date";
+                    if (dateValue) {
+                        formattedDate = formatDate(dateValue);
+                    }
+                    
+                    // 添加内容
+                    doc.setFontSize(12);
+                    doc.setFont("times");
+                    
+                    // 添加页眉
+                    const nameParts = studentName.split(' ');
+                    const lastName = nameParts[nameParts.length - 1] || studentName;
+                    doc.text(`${lastName} ${pageNum}`, 180, 20);
+                    
+                    // 添加MLA头信息
+                    doc.text(`${studentName}`, 20, 40);
+                    doc.text(`${instructorName}`, 20, 50);
+                    doc.text(`${course}`, 20, 60);
+                    doc.text(`${formattedDate}`, 20, 70);
+                    
+                    // 添加标题
+                    doc.setFontSize(18);
+                    doc.text(title, 105, 95, { align: 'center' });
+                    
+                    // 添加示例文本
+                    doc.setFontSize(12);
+                    const lorem = "This is where your essay begins. The first paragraph should introduce your topic and provide a thesis statement. Remember to follow MLA formatting guidelines throughout your paper, including double-spaced text, 12-point Times New Roman font, and 1-inch margins on all sides.";
+                    doc.text(lorem, 20, 120, { maxWidth: 170 });
+                    
+                    // 下载PDF
+                    doc.save('mla-format.pdf');
+                    
+                } catch (e) {
+                    alert('Error generating PDF: ' + e.message);
+                }
+            });
+
+            // DOCX下载功能
+            downloadDocxBtn.addEventListener('click', function() {
+                if (downloadDocxBtn.disabled) return;
+                
+                // 添加下载提示
+                const toast = document.getElementById('toast');
+                toast.textContent = "Downloading MLA template...";
+                toast.style.display = "block";
+                
+                // 模拟下载（实际应用中使用真实文件）
+                setTimeout(() => {
+                    toast.textContent = "MLA template downloaded!";
+                    setTimeout(() => {
+                        toast.style.display = "none";
+                    }, 2000);
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

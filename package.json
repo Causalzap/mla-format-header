@@ -1,0 +1,24 @@
+{
+    "name": "mla-format-header",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "live-server --port=3000 --no-browser"
+    },
+    "devDependencies": {
+        "live-server": "^1.2.2"
+    },
+    "description": "mla format header",
+    "main": "generator.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Causalzap/mla-format-header.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/Causalzap/mla-format-header/issues"
+    },
+    "homepage": "https://github.com/Causalzap/mla-format-header#readme"
+}
